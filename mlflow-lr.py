@@ -9,6 +9,17 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import ElasticNet
 import mlflow
 import mlflow.sklearn
+get_ipython().system_raw("mlflow ui --port 5000 &")
+from pyngrok import ngrok
+from pyngrok import ngrok, conf
+
+# Set your authtoken
+conf.get_default().auth_token = "2wrCkxo6vcLJmdjCweYy8y9Nwed_7Uuky3WpskQ4tcsVTmVPS"  # Replace with your actual authtoken
+
+ngrok.kill()  # Kill any existing ngrok processes
+
+ngrok_tunnel = ngrok.connect(addr="5000", proto="http", bind_tls=True)
+print(ngrok_tunnel.public_url)  # Print the public URL of your tunnel
 
 # COMMAND ----------
 
