@@ -67,7 +67,7 @@ if __name__ == "__main__":
     alpha = args.alpha
     l1_ratio = args.l1_ratio
 
-    exp = mlflow.set_experiment("experiment_1")
+    exp = mlflow.set_experiment(experiment_name="experiment_1")
 
     with mlflow.start_run(experiment_id=exp.experiment_id):
       lr = ElasticNet(alpha=alpha, l1_ratio=l1_ratio, random_state=42)
