@@ -1,0 +1,137 @@
+# Databricks notebook source
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+        .form-group button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Test Client Churn Prediction API</h1>
+        <form id="predictionForm">
+            <div class="form-group">
+                <label for="course">Course:</label>
+                <select id="course" name="course" required>
+                    <option value="Leadership Development">Leadership Development</option>
+                    <option value="Management Skills">Management Skills</option>
+                    <option value="Communication">Communication</option>
+                    <option value="Project Management">Project Management</option>
+                    <option value="Data Analysis">Data Analysis</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="duration">Duration (weeks):</label>
+                <input type="number" id="duration" name="duration" min="1" max="52" required>
+            </div>
+            <div class="form-group">
+                <label for="method_of_delivery">Method of Delivery:</label>
+                <select id="method_of_delivery" name="method_of_delivery" required>
+                    <option value="Online">Online</option>
+                    <option value="In-person">In-person</option>
+                    <option value="Hybrid">Hybrid</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="subscription_type">Subscription Type:</label>
+                <select id="subscription_type" name="subscription_type" required>
+                    <option value="Monthly">Monthly</option>
+                    <option value="Annual">Annual</option>
+                    <option value="One-time">One-time</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="location">Location:</label>
+                <select id="location" name="location" required>
+                    <option value="North America">North America</option>
+                    <option value="Europe">Europe</option>
+                    <option value="Asia">Asia</option>
+                    <option value="South America">South America</option>
+                    <option value="Africa">Africa</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="num_users">Number of Users:</label>
+                <input type="number" id="num_users" name="num_users" min="1" required>
+            </div>
+            <div class="form-group">
+                <label for="price">Price ($):</label>
+                <input type="number" id="price" name="price" min="1" required>
+            </div>
+            <div class="form-group">
+                <button type="submit">Predict Churn</button>
+            </div>
+        </form>
+        <div class="result" id="result" style="display:none;">
+            <h2>Prediction Result:</h2>
+            <pre id="resultData"></pre>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('predictionForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('resultData').textContent = JSON.stringify(data, null, 2);
+                document.getElementById('result').style.display = 'block';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('resultData').textContent = 'Error: ' + error.message;
+                document.getElementById('result').style.display = 'block';
+            });
+        });
+    </script>
+</body>
+</html>
